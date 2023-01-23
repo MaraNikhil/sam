@@ -5,7 +5,6 @@ import java.util.List;
 import org.example.db.MongoManager;
 import org.example.mongoDoc.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component

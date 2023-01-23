@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.ws.Response;
+
 import org.example.contollers.Requests;
 import org.example.mongoDoc.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,6 +58,9 @@ public class Main {
     public Object post(@RequestBody Profile profile) {
         System.out.println("in post with" + profile.toString());
         boolean status = requests.insertDoc(profile);
+        // Response response = new Response<T>() {
+            
+        // };
         HashMap<String, Object> response = new HashMap<>();
         if (status)
             response.put("status", 200);
