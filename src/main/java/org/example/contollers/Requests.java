@@ -24,4 +24,13 @@ public class Requests{
        return profileList;
     }
 
+    public boolean deleteDoc(Profile profile){
+        mongoManager.delete(profile);
+        return true;
+    }
+
+    public void deleteAllDoc(){
+        mongoManager.deleteAll();
+    }
+
 }

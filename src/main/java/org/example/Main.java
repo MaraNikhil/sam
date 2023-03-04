@@ -3,12 +3,13 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
 import java.util.List;
 
-import javax.xml.ws.Response;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 import org.example.contollers.Requests;
+import org.example.json.Json;
 import org.example.mongoDoc.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.example.logger.LoggerClass;
 
 @RestController
 @SpringBootApplication
@@ -55,16 +59,21 @@ public class Main {
     }
 
     @RequestMapping(value = "/post", produces = MediaType.TEXT_PLAIN_VALUE, method = RequestMethod.POST)
-    public Object post(@RequestBody Profile profile) {
-        System.out.println("in post with" + profile.toString());
+    @ResponseBody
+    public Object post(@RequestBody Profile profile, HttpServletResponse response) {
+        LoggerClass.info(Main.class, "in post with", profile);
         boolean status = requests.insertDoc(profile);
-        // Response response = new Response<T>() {
-            
-        // };
-        HashMap<String, Object> response = new HashMap<>();
+        Cookie cookie = new Cookie("platform", "mobile");
+        cookie.setPath("/");
         if (status)
-            response.put("status", 200);
-        return response;
+            response.addCookie(cookie);
+        response.setStatus(200);
+        return Json.jsonToString(profile);
+        // return profile.toString();
+        // catch(IOException exception){
+        // exception.printStackTrace();
+        // return exception.toString();
+        // }
     }
 
     @GetMapping("/all")
