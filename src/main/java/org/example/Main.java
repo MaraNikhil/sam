@@ -15,14 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.example.logger.LoggerClass;
 
 @RestController
@@ -75,9 +79,24 @@ public class Main {
     public List<Profile> getall() {
         return requests.getDoc();
     }
+
     @GetMapping("deleteAll")
-    private String deletrAll(){
+    private String deletrAll() {
         requests.deleteAllDoc();
         return "done";
     }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {
+
+        String fileName = file.getOriginalFilename();
+        try {
+            LoggerClass.info(Main.class, fileName);
+            file.transferTo(new File("/home/nikhilmara/demo/sam/target/"+fileName));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return ResponseEntity.ok("File uploaded successfully.");
+    }
+
 }
