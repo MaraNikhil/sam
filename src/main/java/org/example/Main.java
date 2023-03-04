@@ -8,7 +8,7 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import org.example.contollers.Requests;
+import org.example.db.Requests;
 import org.example.json.Json;
 import org.example.mongoDoc.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,15 +69,15 @@ public class Main {
             response.addCookie(cookie);
         response.setStatus(200);
         return Json.jsonToString(profile);
-        // return profile.toString();
-        // catch(IOException exception){
-        // exception.printStackTrace();
-        // return exception.toString();
-        // }
     }
 
     @GetMapping("/all")
     public List<Profile> getall() {
         return requests.getDoc();
+    }
+    @GetMapping("deleteAll")
+    private String deletrAll(){
+        requests.deleteAllDoc();
+        return "done";
     }
 }
