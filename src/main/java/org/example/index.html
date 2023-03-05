@@ -51,14 +51,20 @@
         <button type="submit" class="sub-btn">submit</button>
     </form>
     <label for="file">upload file</label>
-    <input type="file" id="file" >
+    <input type="file" id="file">
     <button onclick="handleUpload()">submit file</button>
-
+    <form action="" id="inputKey">
+        <label for="key">enter a key</label>
+        <input type="text" id="key">
+        <button type="submit">key</button>
+    </form>
 
 </body>
 <script>
     const form = document.querySelector('#inputForm');
     form && form.addEventListener('submit', submitAction);
+    const KeyForm = document.querySelector('#inputKey');
+    KeyForm && KeyForm.addEventListener('submit', handleKey);
     function submitAction($event) {
         $event.preventDefault();
         const name = document.querySelector('#name').value;
@@ -79,7 +85,7 @@
             console.error(err);
         });
     }
-    function handleUpload(){
+    function handleUpload() {
         const uploadFileEle = document.getElementById("file");
         console.log(uploadFileEle.files[0]);
         let file = uploadFileEle.files[0];
@@ -89,6 +95,24 @@
             method: 'POST',
             body: formData,
             headers: {
+            }
+        }).then(data => {
+            if (data) {
+                console.log(data);
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+    function handleKey($event) {
+        $event.preventDefault();
+        const key = document.querySelector('#key').value;
+        const body = key ;
+        fetch('/wscall', {
+            method: 'POST',
+            body,
+            headers: {
+                "Content-Type": "application/json;charset=utf-8"
             }
         },).then(data => {
             if (data) {

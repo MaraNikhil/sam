@@ -3,6 +3,7 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -101,9 +102,18 @@ public class Main {
         return ResponseEntity.ok("File uploaded successfully.");
     }
 
-    @GetMapping("/wscall")
-    public String ws(){
-       return WsCall.makeWsCall("http://localhost:8282/all", null);
+    @RequestMapping(value = "/wscall", produces = MediaType.TEXT_PLAIN_VALUE, method = RequestMethod.POST)
+    @ResponseBody
+    public String ws(@RequestBody String key, HttpServletResponse response){
+       String responseString = WsCall.makeWsCall("https://catfact.ninja/fact", null);
+       String FALL_BACK_STRING = "There is no data";
+       HashMap<String, Object> hm = Json.stringToJson(responseString, HashMap.class);
+       if(hm.containsKey(key)){
+        response.setStatus(200);
+        return responseString;
+       }
+       response.setStatus(300);
+       return FALL_BACK_STRING;
     }
 
 }
