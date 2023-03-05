@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.example.db.Requests;
 import org.example.json.Json;
 import org.example.mongoDoc.Profile;
+import org.example.services.WsCall;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties.Retry;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -97,6 +99,11 @@ public class Main {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         return ResponseEntity.ok("File uploaded successfully.");
+    }
+
+    @GetMapping("/wscall")
+    public String ws(){
+       return WsCall.makeWsCall("http://localhost:8282/all", null);
     }
 
 }

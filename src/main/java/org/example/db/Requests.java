@@ -1,5 +1,6 @@
 package org.example.db;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.example.mongoDoc.Profile;
@@ -8,26 +9,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @Component
 @RestController
-public class Requests{
+public class Requests {
     @Autowired
     MongoManager mongoManager;
 
     @RequestMapping("/version")
-    public String version(){
+    public String version() {
         return "<h2>started application</h2>";
     }
 
-
-    public boolean insertDoc(Profile profile){
+    public boolean insertDoc(Profile profile) {
         mongoManager.insert(profile);
         return true;
     }
-    public List<Profile> getDoc(){
-       List<Profile> profileList =  mongoManager.findAll();
-       return profileList;
+
+    public List<Profile> getDoc() {
+        List<Profile> profileList = mongoManager.findAll();
+        return profileList;
     }
 
     public boolean deleteDoc(Profile profile){
@@ -35,7 +35,7 @@ public class Requests{
         return true;
     }
 
-    public void deleteAllDoc(){
+    public void deleteAllDoc() {
         mongoManager.deleteAll();
     }
 

@@ -4,10 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-// import java.io.IOException;
-
-// import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class Json {
     public static String jsonToString(Object jsonObject) {
         ObjectMapper Obj = new ObjectMapper();
@@ -15,7 +11,6 @@ public class Json {
         try {
             string = Obj.writeValueAsString(jsonObject);
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -27,12 +22,21 @@ public class Json {
         try {
             return objectMapper.readValue(string, class1);
         } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
     }
+
+    public static <T> T objectToClass(Object object, Class<T> class1) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.convertValue(object, class1);
+    }
+
+    // public static <T> List<T> objectToClass(Class<T> class1, Object object) {
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     return objectMapper.convertValue(object, List.class);
+    //     // return ((class1)string);
+    // }
 }
